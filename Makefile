@@ -35,6 +35,9 @@ typecheck: deps ## mypy over the project (same as CI)
 
 test: deps ## unit tests (same selection as CI)
 	$(PYTEST) Model/tests -v
+	# v2x rasteriser tests are pure-numpy (no extra deps) but run from Model/ so
+	# `data_parsing.*` imports resolve (no __init__.py at the data_parsing root).
+	cd Model && $(PYTEST) data_parsing/v2x -v
 
 # map suite runs from Model/ so `data_parsing.*` imports resolve (no __init__.py).
 # The integration suite is slow and downloads pretrained backbone weights on first run.
